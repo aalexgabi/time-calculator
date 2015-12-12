@@ -1,29 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>Time calculator</title>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=device-width">
-	<meta name="description" content="">
-	<link rel="shortcut icon" href="favicon.ico">
+  <head>
+    <meta charset="utf-8">
+    <title>Time calculator</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
 
-	<!-- Twitter Bootstrap -->
-	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <!-- Twitter Bootstrap -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
-	<!--[if lt IE 9]>
-		<script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.js"></script>
-	<![endif]-->
-</head>
-<body>
+    <!--[if lt IE 9]>
+      <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
 
-	<div id="main">
-		<section id="content">
-			<b>Home Page Content</b>
-		</section>
-	</div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4"></div>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-</body>
+        <div class="col-md-4">
+          <h1 style="text-align: center">
+            Time calculator
+          </h1>
+
+          <hr/>
+          <div class="row">
+            <div class="col-md-5">
+              <input class="form-control" placeholder="hh:mm" required autofocus>
+            </div>
+            <div class="col-md-2">
+              <p style="text-align: center">
+                to
+              </p>
+            </div>
+            <div class="col-md-5">
+              <input class="form-control" placeholder="hh:mm" required>
+            </div>
+          </div>
+
+          <h2 id="difference" style="text-align: center"></h2>
+        </div>
+
+        <div class="col-md-4"></div>
+      </div>
+    </div> <!-- /container -->
+
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $('input').keyup(function () {
+        var inputs = $('input');
+        var start = $(inputs[0]).val();
+        var end = $(inputs[1]).val();
+        var hourFormat = /(\d{2}):(\d{2})/;
+
+        var startParts = hourFormat.exec(start);
+        var endParts = hourFormat.exec(end);
+
+        if (!startParts || !endParts) {
+          return;
+        }
+
+        var startDate = new Date();
+        var endDate = new Date();
+
+        startDate.setHours(startParts[1]);
+        startDate.setMinutes(startParts[2]);
+        endDate.setHours(endParts[1]);
+        endDate.setMinutes(endParts[2]);
+
+        var difference = +endDate - +startDate;
+
+        if (difference < 0) {
+          difference += 24 * 60 * 60 * 1000;
+          difference = Math.abs(difference);
+        }
+
+        $('#difference').text(difference / 1000 / 60 + ' minutes');
+      })
+    </script>
+  </body>
 </html>
